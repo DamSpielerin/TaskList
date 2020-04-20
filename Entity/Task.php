@@ -10,7 +10,7 @@ class Task extends Model
 
     protected $table = 'task';
 
-    protected $fillable = ['username', 'email', 'description', 'done'];
+    protected $fillable = ['username', 'email', 'description', 'done','was_edited'];
 
     protected $attributes = [
         'done' => false

@@ -9,7 +9,7 @@ class LoginController extends Controller
     {
         if (!empty($parameters['post']['login']) && $parameters['post']['login'] === 'admin' && !empty($parameters['post']['password']) && $parameters['post']['password'] == '123') {
             session_start();
-            $sessionAdmin = AdminSession::firstOrNew(['session_id' => session_id(), 'login' => 'admin']);
+            $sessionAdmin = AdminSession::firstOrCreate(['session_id' => session_id(), 'login' => 'admin']);
             $sessionAdmin->update(['is_logged'=>true]);
             header('Location: /');
         } else {

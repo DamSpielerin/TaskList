@@ -35,7 +35,7 @@ class TaskController extends Controller
 
     public function editAction($parameters)
     {
-        if(!IS_ADMIN){
+        if (!IS_ADMIN) {
             header("HTTP/1.1 401 Unauthorized");
             include("401.html");
             exit();
@@ -47,10 +47,12 @@ class TaskController extends Controller
             if ($errors === '') {
                 $task->update([
                     'username' => $form['username'],
-                    'email' => $form['email'], 'description' => $form['description'],
+                    'email' => $form['email'],
+                    'description' => $form['description'],
                     'done' => $form['done'] === 'on',
+                    'was_edited'=> $form['description'] !== $task->description
                 ]);
-                 header('Location: /');
+                header('Location: /');
             } else {
                 $this->view('task_edit_form',
                     array(
@@ -72,22 +74,30 @@ class TaskController extends Controller
     {
         $form = $parameters['post'];
 
-        if (is_array($form)) {
+        if (is_array($form) && count($form)) {
             $errors = Task::validate($form);
             if ($errors === '') {
                 Task::create(['username' => $form['username'], 'email' => $form['email'], 'description' => $form['description']]);
+                $this->view('task_form',
+                    array(
+                        'message' => 'You had successfully created new task',
+                        'new_active' => 'active',
+                        'errors' => $errors,
+                    ));
             } else {
                 $this->view('task_form',
                     array(
+                        'message' => 'You had successfully created new task',
                         'new_active' => 'active',
                         'errors' => $errors,
                     ));
             }
+        } else {
+            $this->view('task_form',
+                array(
+                    'new_active' => 'active',
+                ));
         }
-        $this->view('task_form',
-            array(
-                'new_active' => 'active',
-            ));
 
     }
 
