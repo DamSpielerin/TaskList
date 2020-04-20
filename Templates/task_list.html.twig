@@ -1,0 +1,85 @@
+{% extends "base.html.twig" %}
+{% block content %}
+    <h1 class="text-center">Our challenges</h1>
+
+    <table class="table table-bordered table-dark">
+        <thead>
+        <tr class="{{ sort_params.sort }} {{ sort_params.order }}">
+            <th class="done" scope="col">Status</th>
+            <th class="username" scope="col">User Name</th>
+            <th class="email" scope="col">Email</th>
+            <th scope="col">Task</th>
+            {% if (is_admin) %}
+                <th scope="col">Edit</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+            <tr>
+                {% if(task.done) %}
+                    <th class="status" scope="row">&#9634;</th>
+                {% else %}
+                    <th class="status" scope="row">&#x25a2;</th>
+                {% endif %}
+                <td>{{ task.username }}</td>
+                <td>{{ task.email }}</td>
+                <td>{{ task.description }}</td>
+                {% if (is_admin) %}
+                    <th scope="col"><a href="/edit?id={{ task.id }}">Edit</a></th>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    {% if(last_page>1) %}
+        <nav aria-label="navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="?page=1&{{ sort_params|url_encode }}" aria-label="First">
+                        <span aria-hidden="true">First</span>
+                    </a>
+                </li>
+                {% if(cur_page != 1) %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ cur_page-1 }}&{{ sort_params|url_encode }}"
+                           aria-label="Prev">Prev</a>
+                    </li>
+                {% endif %}
+                <li class="page-item active"><span class="page-link">{{ cur_page }}</span></li>
+                {% if(last_page>cur_page) %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ cur_page+1 }}&{{ sort_params|url_encode }}"
+                           aria-label="Next">Next</a>
+                    </li>
+                {% endif %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ last_page }}&{{ sort_params|url_encode }}" aria-label="Last">
+                        <span aria-hidden="true">Last</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const sort = urlParams.get('sort');
+            const order = urlParams.get('order');
+            $('th.done,th.email,th.username').on('click', function () {
+                var my_class = $(this).attr('class');
+                var params = 'sort=' + my_class;
+                if (sort == my_class && order != 'desc') {
+                    params += '&order=desc'
+                }
+                window.location = 'index.php?' + params;
+            })
+
+        });
+    </script>
+{% endblock %}

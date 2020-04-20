@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+{% block styles %}
+    <link href="/web/css/form.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <form class="form-task" action="/edit" method="post">
+
+        <h1 class="h3 mb-3 font-weight-normal">Update task</h1>
+        {% if(error) %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+        <div class="form-group">
+            <label for="username">Login</label>
+            <input type="text" value="{{ task.username }}" name="username" id="username" class="form-control"
+                   placeholder="Username" required autofocus>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" value="{{ task.email }}" name="email" id="email" class="form-control"
+                   placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Task description</label>
+            <input type="text" value="{{ task.description }}" name="description" id="description" class="form-control"
+                   placeholder="Task description" required>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" name="done" {% if( task.done == 1 ) %}checked="checked"{% endif %}>
+            <label for="done">Done</label>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+            <input type="hidden" name="id" value="{{ task.id }}">
+        </div>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+    </form>
+{% endblock %}

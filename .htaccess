@@ -5,10 +5,13 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{DOCUMENT_ROOT}/web%{REQUEST_URI} -d
 RewriteRule ^(.*?)/?$ /web/$1/ [L]
 
-RewriteRule ^/(edit|create|login|logout) /web/index.php [L]
+RewriteRule /login /web/index.php [L]
+RewriteRule /logout /web/index.php [L]
+RewriteRule /create /web/index.php [L]
+RewriteRule /edit /web/index.php [L]
 RewriteCond %{REQUEST_URI} !^/web
 RewriteRule ^(.*)$ /web/$1 [L]
 
+ErrorDocument 401 /401.html
 ErrorDocument 404 /404.html
-ErrorDocument 500 /500.html
 

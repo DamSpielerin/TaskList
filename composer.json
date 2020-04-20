@@ -1,0 +1,17 @@
+{
+    "require": {
+        "illuminate/database": "4.1.*",
+        "twig/twig": "2.*",
+        "filp/whoops": "2.*"
+
+    },
+    "autoload": {
+        "classmap": [
+            "Entity",
+            "Core"
+        ],
+        "files": [
+            "Config/db.php"
+        ]
+    }
+}
